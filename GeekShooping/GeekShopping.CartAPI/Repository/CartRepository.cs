@@ -62,11 +62,11 @@ namespace GeekShopping.CartAPI.Repository
 
                 if (total == 1)
                 {
-                    var cartHeaderToRemove = await _context.CartHeaders.FirstOrDefaultAsync(c => c.Id == cartDetail.CartHeaderId);
+                    var cartHeaderToRemove = await _context.CartHeaders
+                        .FirstOrDefaultAsync(c => c.Id == cartDetail.CartHeaderId);
                     _context.CartHeaders.Remove(cartHeaderToRemove);
-                    _context.SaveChangesAsync();
                 }
-
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -98,10 +98,10 @@ namespace GeekShopping.CartAPI.Repository
             }
             else
             {
-                var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(p => p.ProductId == vo.CartDetails.FirstOrDefault().ProductId && p.CartHeaderId == cartHeader.Id);
+                var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(p => p.ProductId == cart.CartDetails.FirstOrDefault().ProductId && p.CartHeaderId == cartHeader.Id);
                 if (cartDetail == null)
                 {
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
                     _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
