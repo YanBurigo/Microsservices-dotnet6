@@ -75,7 +75,6 @@ namespace GeekShopping.OrderAPI.Migrations
                         .HasColumnName("total_itens");
 
                     b.Property<string>("CouponCode")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("coupon_code");
 
